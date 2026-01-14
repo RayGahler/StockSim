@@ -1,5 +1,17 @@
+#include <string>
 #ifndef ORDER
 #define ORDER
+
+struct Stock{
+    std::string name;
+
+    double maxPrice;
+    double minPrice;
+
+    double price;
+    double bias;
+
+};
 
 enum OrderType{
     MARKER_ORDER,
@@ -9,8 +21,9 @@ enum OrderType{
 };
 
 struct Order{
+    Stock stock;
     OrderType Type;
-    int Price;
+    float Amount;
     bool Buy;
     bool inEffect;
 };
