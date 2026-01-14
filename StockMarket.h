@@ -1,9 +1,11 @@
 #include "Order.h"
 #include <unordered_map>
 #include <vector>
+#include <mutex>
+#include <thread>
+#include <chrono>
 
-#ifndef STOCKMARKET
-#define STOCKMARKET
+#pragma once
 
 
 
@@ -16,15 +18,18 @@ class StockMarket{
 
         void Init();
         int newDay();
+        void startMarket();
+        void stopMarket();
+        void placeOrder(Order& order);
+        void printPrices();
 
 
 
     private:
-        StockMarket(int maxStocks) : maxStocks(maxStocks){};
+        StockMarket(int maxStocks) : maxStocks(maxStocks), dayCounter(0), closed(true){};
         StockMarket(const StockMarket&) = delete;
         StockMarket& operator= (const StockMarket&) = delete;
         
-        ~StockMarket();
 
         bool closed;
         int dayCounter;
@@ -33,6 +38,9 @@ class StockMarket{
         std::unordered_map<std::string, Stock> stockMap;
         std::vector<std::string> stockNames;
         double fullBias;
+        
+        std::mutex marketMutex;
+        std::thread marketThread;
 
         //inits
         double getRandomInitPrice(Stock& stock);
@@ -40,8 +48,8 @@ class StockMarket{
         std::string getRandomName();
 
         //new Days
-        
         double getRandomBias(Stock& stock);
+        void marketLoop();
         
         //Each frame
         void getNewPrices();
@@ -53,4 +61,3 @@ class StockMarket{
 
 
 };
-#endif

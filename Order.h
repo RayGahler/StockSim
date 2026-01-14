@@ -13,6 +13,7 @@ struct Stock{
 
 };
 
+
 enum OrderType{
     MARKER_ORDER,
     LIMIT_ORDER,
