@@ -15,7 +15,7 @@ struct Stock{
 
 
 enum OrderType{
-    MARKER_ORDER,
+    MARKET_ORDER,
     LIMIT_ORDER,
     STOP_ORDER,
     STLIM_ORDER
@@ -27,6 +27,11 @@ struct Order{
     float Amount;
     bool Buy;
     bool inEffect;
+
+    double sellPrice;
+
+    float boughtAt;
+    float profit;
 };
 
 #endif

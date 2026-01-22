@@ -18,27 +18,39 @@ class StockMarket{
 
         void Init();
         int newDay();
+        int increaseTime();
         void startMarket();
         void stopMarket();
         void placeOrder(Order& order);
         void printPrices();
 
+        void startBuyOrder();
+        void startSellOrder();
+
+        float money;
+        float usableMoney;
 
 
     private:
-        StockMarket(int maxStocks) : maxStocks(maxStocks), dayCounter(0), closed(true){};
+        StockMarket(int maxStocks) : maxStocks(maxStocks), dayCounter(0), closed(true), money(1000.00f), usableMoney(1000.00f){};
         StockMarket(const StockMarket&) = delete;
         StockMarket& operator= (const StockMarket&) = delete;
         
 
         bool closed;
         int dayCounter;
+        int hourCounter;
         int maxStocks;
+
+        bool pause;
 
         std::unordered_map<std::string, Stock> stockMap;
         std::vector<std::string> stockNames;
         double fullBias;
-        
+        std::vector<Order> pendingOrders;
+        std::vector<Order> purchasedStocks;
+
+
         std::mutex marketMutex;
         std::thread marketThread;
 
@@ -53,6 +65,9 @@ class StockMarket{
         
         //Each frame
         void getNewPrices();
+        void checkPendingOrders();
+
+        void calcProfit();
 
 
 
